@@ -1,46 +1,77 @@
-# Getting Started with Create React App
+# yarn 사용하는 이유 : npm은 순차적으로 처리하고 yarn은 병렬로 처리하고 속도가 빠르다.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Prettier
+- 프리티어는 가독성을 좋게 만들어주는 확장 도구
+- 균일한 코드 관리
 
-## Available Scripts
+yarn add dev -prettier
+npm install -D prettier
 
-In the project directory, you can run:
+# ESLint
+- 자바스크립트를 분석해서 ㅗ류나 버그를 찾는 정적 분석 도구
 
-### `npm start`
+```
+yarn add --dev eslint eslint-config-prettier eslint-plugin-prettier
+npm install -D eslint eslint-config-prettier eslint-plugin-prettier
+```
+- eslint-config-prettier : eslint에서 prettier와 충돌할 수 있는 rule 끄기
+- eslint-plugin-prettier : prettier를 eslinit의 rules로 동작
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# CSS in JS
+리액트 2가지 방식으로 컴포넌트 스타일 적용
+- CSS in CSS
+    - 리액트 컴포넌트 별로 css 파일을 갖는 형식으로 스타일을 관리
+    - CSS Module
+    - 별도의 자바스크립트 전환이 필요 없어 속도가 빠름
+- CSS in JS
+    - JS 내에서 css를 작성하는 방식
+    - 대표적으로 styled-component, emotion 등
+    - 현재 사용 중인 스타일만 DOM에 포함
+    - 별도 패키지를 설치하기 때문에 용량이 증가(스크립트 전환이 필요하여 속도도 느려짐)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Emotion
+- CSS in JS 라이브러리 중 1개
+vs styled-component 큰 차이가 없다
 
-### `npm test`
+```
+yarn add @emotion/react @emotion/styled
+npm install @emotion/react @emotion/styled
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Props
+- 컴포넌트에 값을 넘겨주는 것
+- 부모 컴포넌트 -> 자식 컴포넌트 데이터 전달
+- 자식 컴포넌트 입장에서는 데이터를 받았기 때문에 수정 불가능
 
-### `npm run build`
+JS에서는 Props를 바로 사용이 가능하다. 하지만 TS에서는 타입을 지정해야 한다. 따라서 인터페이스를 만들어줘야 한다.
+```
+interface Props{
+    name: string;
+    color: string; 
+}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+export const Hello = ({name, color}:Props) => {
+    return <div style={{color}}>Hello {name}</div>;
+};
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+import Hello from './Hello';
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+function App() {
+    return <Hello name={'Around Hub Studio'} color={'red'}></Hello>;
+}
+export default App;
+```
 
-### `npm run eject`
+# Optional Props
+```
+interface Props{
+    name: string;
+    color?: string; 
+}
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+export const Hello = ({name, color="blue"}:Props) => {
+    return <div style={{color}}>Hello {name}</div>;
+};
+```
