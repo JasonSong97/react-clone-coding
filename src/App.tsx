@@ -1,9 +1,10 @@
-import Hello from "./Hello";
+import { PropsAndState } from './example/PropsAndState';
+import { StateComponent2 } from './example/StateComponent2';
 
 
 function App() {
   return (
-    <Hello></Hello>
+    <PropsAndState></PropsAndState>
   );
 }
 

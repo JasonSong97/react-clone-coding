@@ -75,3 +75,19 @@ export const Hello = ({name, color="blue"}:Props) => {
     return <div style={{color}}>Hello {name}</div>;
 };
 ```
+
+# State
+- State는 리액트에서 이벤트에 의해 변경되는 동적인 값을 의미
+- 한 컴포넌트 안에서 유동적인 데이터를 다룰 때 사용되며 컴포넌트 안에서 데이터를 변경할 수 있음
+- Props는 부모 컴포넌트가 설정하는 값으로 읽기 전용으로만 사용했지만, State는 하위 컴포넌트에서도 데이터를 변경할 수 있는 특징이 존재
+- State를 사용하기 위해서는 useState라는 Hook을 사용
+
+```
+const [state, setState] = useState(initialState);
+const [message, setMessage] = useState('');
+
+const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setState(event.target.value);
+}
+```
+setState는 setter함수이기 때문에 다른 곳에서 호출하여 state값을 변경할 때 사용
