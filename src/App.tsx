@@ -1,11 +1,13 @@
-import { ContextExample } from './example/Context/Context';
-import { Context2 } from './example/Context/Context2';
-import { NonContext } from './example/Context/NonContext';
+import { Layout } from "./layouts/Layout";
+import { Example1 } from "./pages/Example1";
+import { Example2 } from "./pages/Example2";
 
 
 function App() {
   return (
-    <Context2 />
+    <Layout>
+      <Example2 />
+    </Layout>
   );
 }
 

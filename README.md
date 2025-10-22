@@ -147,3 +147,122 @@ export const CountLabel = () => {
 ```
 
 - 주의사항 : Context의 값이 변경될 때마다 하위 컴포넌트들이 다시 랜더링된다. 성능에 영향을 준다.
+
+# Layout
+
+- 일반적인 페이지는 Header, Menu(Option), SideBar(Option), Content, Footer 구성
+
+Header 컴포넌트
+```javascript
+export cosnt Header = () => {
+    return (
+        <Container>
+            <Logo src='...' alt='Logo' />
+            <Nav>
+                <NavLink href='#'>Home</NavLink>
+                <NavLink href='#'>About</NavLink>
+                <NavLink href='#'>Services</NavLink>
+                <NavLink href='#'>Contact</NavLink>
+            </Nav>
+        </Container>
+    );
+};
+```
+
+Footer 컴포넌트
+```javascript
+export cosnt Footer = () => {
+    return (
+        <FooterContainer>
+            <FooterText>...</FooterText>
+            <div>
+                <SocialMediaLink href='#'>Facebook</SocialMediaLink>
+                <SocialMediaLink href='#'>Twitter</SocialMediaLink>
+                <SocialMediaLink href='#'>Instagram</SocialMediaLink>
+            </div>
+        </FooterContainer>
+    );
+};
+```
+
+Sidebar 컴포넌트
+```javascript
+export cosnt Sidebar = () => {
+    return (
+        <Container>
+            <Menu>
+                <MenuItem>
+                    <MenuLink href='#'>Home</MennuLink>
+                </MenuItem>
+                <MenuItem>
+                    <MenuLink href='#'>About</MennuLink>
+                </MenuItem>
+                <MenuItem>
+                    <MenuLink href='#'>Services</MennuLink>
+                </MenuItem>
+                <MenuItem>
+                    <MenuLink href='#'>Contact</MennuLink>
+                </MenuItem>
+            </Menu>
+            <Info>
+                <InfoTitle>Follow Us</InfoTitle>
+                <InfoText>Stay connected with us</InfoText>
+            </Info>
+        </Container>
+    );
+};
+```
+
+Content 컴포넌트
+```javascript
+export cosnt Example1 = () => {
+    return (
+        <Container>
+            <Title>Example 1</Title>
+            <Content>
+                <Card>
+                    <Image
+                        src='...',
+                        alt='...'
+                    />
+                    <Text>...</Text>
+                </Card>
+                <Card>
+                    <Image
+                        src='...',
+                        alt='...'
+                    />
+                    <Text>...</Text>
+                </Card>
+            </Content>
+        </Container>
+    );
+};
+```
+
+Layout 구성 => 1개의 컴포넌트로 볼 수 있다
+```javascript
+export const Layout = (props: Props) => {
+    return (
+        <Container>
+            <Header />
+            <Content>
+                <Sidebar />
+                <Main>{props.children}</Main>
+            </Content>
+            <Footer />
+        </Container>
+    );
+};
+```
+
+사용
+```javascript
+function App() {
+    return (
+        <Layout>
+            <Example1 />
+        </Layout>
+    );
+}
+```
