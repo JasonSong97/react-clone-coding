@@ -366,3 +366,47 @@ const handleClick = () => {
 - Link vs useNavigate
   - Link 컴포넌트 : Link 컴포넌트는 a 태그를 대신하여 클라이언트 라우팅을 위해 사용, 사용자가 해당 링크를 클릭하면, 브라우저는 페이지를 새로 고치지 않고도 React Router가 관리하는 URL로 이동
   - useNavigate 훅 : useNavigate 훅은 함수 컴포넌트 내부에서 프로그래밍 방식으로 라우터를 제어, 주로 이벤트 핸들러나 조건부 또는 비동기적인 상황에서 특정 URL로 이동할 경우 사용, useNavigate 훅은 사용자의 액션을 기다리지 않고 바로 URl을 변경
+
+# useEffect (훅 중 1개)
+- useEffect는 리액트 컴포넌트가 랜더링 될 떄마다 특정 작업을 실행할 수 있도록 하는 리액트 Hook 중 1개
+- 컴포넌트가 마운트, 언마운트, 업데이트 될때 특정 작업을 처리할 수 있음
+
+useEffect 실행 시점
+```javascript
+// 컴포넌트가 렌더링 될 때마다 실행
+useEffect(() => {
+});
+
+// 컴포넌트가 처음 렌더링 될 때 실행
+useEffect(() => {
+}, []);
+
+// 컴포넌트가 처음 렌더링 될 때 실행 후 photos 값이 변경되면 re-rendering된 이후 실행
+useEffect(() => {
+}, [photos]);
+```
+
+사용 방법
+```
+useEffect(setup, dependencies?)
+```
+- setup : setup 영역에는 컴포넌트가 마운트(렌더링)될 때 동작할 로직을 추가할 수 있다. 이후 return 키워드를 사용하여 언마운트 상황에서 동작할 로직을 선택적으로 추가할 수 있다.
+- dependencies : dependencies 영역은 setup 영역 내에서 참조되는 반응형 값들의 리스트를 정의할 수 있다. 이 값들은 props, state 들의 값들을 정의할 수 있다. 리액트는 이 값들을 비교하여 차이가 발생하면 다시 렌더링할 때마다 effect가 발동한다.
+```javascript
+function ChatRoom({roomId}) {
+    const [serverUrl, setServerUrl] = useState('주소...');
+
+    useEffect(() => {
+        // 마운트(렌더링) 될 떄
+        const connection = createConnection(serverUrl, roomId);
+        connection.connect();
+
+        // 언마운트 될 때
+        return () => {
+            connection.disconnect();
+        };
+    }, [serverUrl, roomId]); // serverUrl, roomId가 변경 시 useEffect 다시 실행
+}
+```
+
+https://jsonplaceholder.typicode.com/
