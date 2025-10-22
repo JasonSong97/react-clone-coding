@@ -44,7 +44,7 @@ npm install @emotion/react @emotion/styled
 - 자식 컴포넌트 입장에서는 데이터를 받았기 때문에 수정 불가능
 
 JS에서는 Props를 바로 사용이 가능하다. 하지만 TS에서는 타입을 지정해야 한다. 따라서 인터페이스를 만들어줘야 한다.
-```
+```javascript
 interface Props{
     name: string;
     color: string; 
@@ -55,7 +55,7 @@ export const Hello = ({name, color}:Props) => {
 };
 ```
 
-```
+```javascript
 import Hello from './Hello';
 
 function App() {
@@ -65,7 +65,7 @@ export default App;
 ```
 
 # Optional Props
-```
+```javascript
 interface Props{
     name: string;
     color?: string; 
@@ -82,7 +82,7 @@ export const Hello = ({name, color="blue"}:Props) => {
 - Props는 부모 컴포넌트가 설정하는 값으로 읽기 전용으로만 사용했지만, State는 하위 컴포넌트에서도 데이터를 변경할 수 있는 특징이 존재
 - State를 사용하기 위해서는 useState라는 Hook을 사용
 
-```
+```javascript
 const [state, setState] = useState(initialState);
 const [message, setMessage] = useState('');
 
@@ -91,3 +91,59 @@ const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
 }
 ```
 setState는 setter함수이기 때문에 다른 곳에서 호출하여 state값을 변경할 때 사용
+
+# Context
+- 계층적으로 내려가는 컴포넌트의 구조상 해당 prop이 필요없어도 자식 컴포넌트에게 전해주기 위해 가지고 있는 경우가 존재
+- props drilling (props의 문제점)
+
+![alt text](./study_images/image.png)
+
+- 컨텍스트란 리액트에서 Context눈 컴포넌트에게 Props를 사용하지 않고 필요한 데이터를 넘겨줄 수 있게 하는 기능
+- 테마 설정, 언어 설정
+- Context API 개념 - Context Provider, Context Consumer
+
+![alt text](./study_images/image2.png)
+
+Context를 사용하기 위해서는 아래와 같은 Context 생성
+
+```javascript
+const TodoContext = createContext<TodoListContextValueType | undefined>(
+    undefined
+);
+```
+
+Context에서 제공하는 Provider를 사용하는 컴포넌트 생성
+
+```javascript
+export const TodoProvider = (props: Props) => {
+    ...
+
+    return (
+        <TodoContext.Provider value={values}>{props.children}</TodoContext.Provider>
+    );
+};
+```
+
+해당 Context를 사용하는 컴포넌트들의 상단에 Provider 컴포넌트를 씌워주기
+
+```javascript
+export const ContextExample = () => {
+    return (
+        <CountProvider>
+            <CountLavbl />
+            <PlusButton />
+        </CountProvider>
+    );
+};
+```
+
+실제 Context의 값을 사용하는 곳에서 useContext를 활용하여 가져다 사용
+
+```javascript
+export const CountLabel = () => {
+    const {count} = useContext(CountContext);
+    return <div>{count}</div>;
+};
+```
+
+- 주의사항 : Context의 값이 변경될 때마다 하위 컴포넌트들이 다시 랜더링된다. 성능에 영향을 준다.
