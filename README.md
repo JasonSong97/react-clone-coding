@@ -410,3 +410,56 @@ function ChatRoom({roomId}) {
 ```
 
 https://jsonplaceholder.typicode.com/
+
+# Fetch API
+- JS의 내장 객체이며 API를 호출하는 역할을 수행
+```javascript
+useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/photos')
+        .then((response) => response.json())
+        .then((data) => setPhotos(data.slice(0, 4)))
+        .catch((error) => console.error(error));
+}, []);
+```
+
+Fetch API 구조
+```javascript
+fetch('url', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application.json'
+    },
+    body: JSON.stringify(photos),
+    mode: 'cors',
+    credentials: 'include',
+    cache: 'no-cache'
+})
+    .then((response) => response.json())
+    .catch((error) => console.error(error));
+```
+
+fetch()는 Promise객체를 return하기 때문에 then 함수를 사용하여 response를 받아 추가 작업을 수행하면 된다.
+```javascript
+useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/photos')
+        .then((response) => response.json())
+        .then((data) => setPhotos(data.slice(0, 4)))
+        .catch((error) => console.error(error));
+}, []);
+```
+
+then 대신에 async와 await를 사용할 수 있다.
+```javascript
+async function fetchPhotos() {
+    // 호출 결과를 로딩중인지 아닌지 판단할 수 있는 로직을 추가해볼 수 있음
+    const response = await fetch('https://jsonplaceholder.typicode.com//photos');
+    if (!response.ok) {
+        throw new Error('Error');
+    }
+
+    const paredData = await response.json();
+    const transformedPhotos = paredData.slice(0, 4);
+
+    return transformedPhotos;
+}
+```
