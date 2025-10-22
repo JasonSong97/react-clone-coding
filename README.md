@@ -266,3 +266,103 @@ function App() {
     );
 }
 ```
+
+# Route
+- 사용자가 URL을 통해 페이지를 접근할 경우 URL에 따른 다른 컴포넌트를 보여주기 위해 라우팅을 적용
+- 리액트에서는 일반적으로 react-router 사용
+- 뒤로가기 / 앞으로 가기 가능
+- SSR로 구현 시, Next.js를 통해 해당 기능 구현
+
+```
+yarn add react-router-dom@6
+
+yarn add react-router-dom @types/react-router-dom # 6버전 아래 케이스
+```
+
+최상단 <BrowserRouter> 컴포넌트를 덮어쓰기
+```javascript
+improt {BrowserRouter} from 'react-router-dom';
+
+const root = ReactDOM.createRoot(
+    document.getElementById('root') as HTMLElement
+);
+root.render(
+    <React.StrintMode>
+        <BrowserRouter> <<<
+            <App />
+        </BrowserRouter> >>>
+    </React.StrintMode>
+);
+```
+
+<Routes> 컴포넌트와 <Route> 컴포넌트를 사용하여 라우트를 설정
+```javascript
+function App() {
+    return (
+        <Layout>
+            <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/about' element={<About />} />
+                <Route path='/example1' element={<Example1 />} />
+                <Route path='/example2' element={<Example2 />} />
+                <Route
+                    path={'*'}
+                    element={
+                        <>
+                            <NotFound>
+                                404 <br /> NOT FOUND
+                            </NotFound>
+                        </>
+                    }
+                />
+            </Routes>
+        </Layout>
+    );
+}
+```
+
+react-router 에서 제공하는 <Link> 컴포넌트를 사용하여 페이지를 이동할 수 있게 링크 추가
+```javascript
+const MenuLink = styled(Link)`
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+
+    &:hover {
+        color: #4285f4;
+    }
+`;
+```
+
+```javascript
+<MenuItem>
+    <MenuLink to='/'>Home</MenuLink>
+</MenuItem>
+<MenuItem>
+    <MenuLink to='/about'>About</MenuLink>
+</MenuItem>
+<MenuItem>
+    <MenuLink to='/example1'>Example1</MenuLink>
+</MenuItem>
+<MenuItem>
+    <MenuLink to='/example2'>Example2</MenuLink>
+</MenuItem>
+```
+
+react-router에서 제공하는 useNavigate 훅을 사용하여 페이지를 이돌할 수 있게 만들 수 있다
+```javascript
+const navigate = useNavigate();
+
+const handleClick = () => {
+    navigate('/');
+    scrollToTop();
+};
+```
+
+```javascript
+<button onClick={handleClick}>go home</button>
+```
+
+- Link vs useNavigate
+  - Link 컴포넌트 : Link 컴포넌트는 a 태그를 대신하여 클라이언트 라우팅을 위해 사용, 사용자가 해당 링크를 클릭하면, 브라우저는 페이지를 새로 고치지 않고도 React Router가 관리하는 URL로 이동
+  - useNavigate 훅 : useNavigate 훅은 함수 컴포넌트 내부에서 프로그래밍 방식으로 라우터를 제어, 주로 이벤트 핸들러나 조건부 또는 비동기적인 상황에서 특정 URL로 이동할 경우 사용, useNavigate 훅은 사용자의 액션을 기다리지 않고 바로 URl을 변경
