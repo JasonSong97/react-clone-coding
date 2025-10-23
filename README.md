@@ -463,3 +463,50 @@ async function fetchPhotos() {
     return transformedPhotos;
 }
 ```
+
+# Axios
+- Axios는 Promise 기반의 Http client 패키지
+- async/await을 활용할 떄 더욱 쉽게 구현
+
+![alt text](./study_images/image3.png)
+
+```
+yarn add axios
+npm install axios
+```
+
+사용방법
+```javascript
+axios
+    .get('주소...')
+    .then((response) => {
+        console.log(response.data);
+    })
+    .catch((error) => {
+        console.error(error);
+    })
+    .finally(() => { // 마무리 동작 코드
+        console.log('finally statement');
+    });
+```
+
+await 사용 시 간단히 사용
+```javascript
+const response = await axios.get(
+    '주소...'
+);
+setTodos(response.data);
+```
+
+요청 전, 응답을 받은 후 공통으로 수행해야 하는 작업이 있다면 인터셉터를 적용하여 처리할 수 있음
+```javascript
+jsonPlaceholderRequest.interceptors.request.use(
+    (config) => {
+        console.log('호출 전 수행할 작업');
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+```
